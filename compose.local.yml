@@ -1,0 +1,39 @@
+services:
+
+  ai:
+    container_name: ai
+    build:
+      context: .
+      dockerfile: ./docker/ai/Dockerfile
+    volumes:
+      - ./apps/ai/:/ai/
+    ports:
+      - "${AI_PORT}:${AI_PORT}"
+    restart: always
+    env_file:
+      - ./apps/ai/.env.local
+  #   depends_on:
+  #     - postgresql
+
+  # postgresql:
+  #   container_name: postgresql
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/postgresql/Dockerfile
+  #   volumes:
+  #     - type: bind
+  #       source: ./apps/postgresql/local
+  #       target: /var/lib/postgresql/data
+  #   environment:
+  #     POSTGRES_DB: ${PSQL_NAME}
+  #     POSTGRES_USER: ${PSQL_USER}
+  #     POSTGRES_PASSWORD: ${PSQL_PASSWORD}
+  #   ports:
+  #     - "127.0.0.1:${PSQL_PORT}:${PSQL_PORT}"
+  #   restart: always
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U ${PSQL_USER} -d ${PSQL_NAME}"]
+  #     interval: 1s
+  #     timeout: 3s
+  #     retries: 30
+
